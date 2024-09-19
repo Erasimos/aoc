@@ -14,12 +14,11 @@ puzzle_input_path = Path(__file__).parent / 'input' / f'{day}.txt'
 
 def get_input():
     puzzle_input = ut.read_file(puzzle_input_path)
-    tree_map = {Vec2D(x, y): tree for y, line in enumerate(puzzle_input) for x, tree in enumerate(line)}
-    return tree_map
+    return {Vec2D(x, y): tree for y, line in enumerate(puzzle_input) for x, tree in enumerate(line)}
 
 
 def is_edge(tree_map: dict, pos: Vec2D):
-    return any([tree_map.get(npos) == None for npos in pos.neighbors_orthogonal()])
+    return any(tree_map.get(npos) is None for npos in pos.neighbors_orthogonal())
 
 
 def get_scenic_score(tree_map: dict[Vec2D, int], pos: Vec2D):
@@ -42,8 +41,7 @@ def get_scenic_score(tree_map: dict[Vec2D, int], pos: Vec2D):
 
         viewing_distances.append(viewing_distance)
 
-    a = reduce(mul, viewing_distances, 1)
-    return a
+    return reduce(mul, viewing_distances, 1)
 
 
 def count_visible_trees(tree_map: dict[Vec2D, int]):
