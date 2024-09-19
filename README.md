@@ -1,2 +1,3 @@
 # aoc
-repository for Advent of Code all every year
+Advent of Code
+https://adventofcode.com/
