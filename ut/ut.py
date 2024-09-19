@@ -58,7 +58,12 @@ class Vec2D:
         if isinstance(self, Vec2D):
             return Vec2D(-self.x, -self.y)
         return NotImplemented
-    
+
+
+    def neighbors_orthogonal(self):
+        return [self + neighbor_dir for neighbor_dir in UDLR]
+
+
     def neighbors(self):
         return [self + neighbor_dir for neighbor_dir in NEIGHBORS_2D]
 

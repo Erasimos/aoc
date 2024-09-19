@@ -6,7 +6,7 @@ import ut
 
 
 day = Path(__file__).stem
-puzzle_input_path = Path(__file__).parent / 'input' / f'{day}'.txt
+puzzle_input_path = Path(__file__).parent / 'input' / f'{day}.txt'
 
 
 def get_input():
