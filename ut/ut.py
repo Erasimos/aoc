@@ -75,10 +75,3 @@ RIGHT = Vec2D(1, 0)
 LEFT = Vec2D(-1, 0)
 UP = Vec2D(0, -1)
 DOWN = Vec2D(0, 1)
-
-
-
-
-
-
-
