@@ -1,6 +1,8 @@
 import os
 import math
 import pyperclip
+from typing import List, Callable
+
 
 def read_file(file):
     f = open(file, 'r')
@@ -19,6 +21,21 @@ def read_file_raw(file):
 def print_answer(day, part, answer):
     pyperclip.copy(answer)
     print('The answer to day: ', day, ' part ', part, ' is: ', answer)
+
+
+def insert_sort(list: List, compare: Callable):
+    sorted_list = []
+
+    for el in list:
+
+        for i, sorted_el in enumerate(sorted_list):
+            if compare(el, sorted_el):
+                sorted_list.insert(i, el)
+                break
+        else:
+            sorted_list.append(el)
+            
+    return sorted_list
 
 
 def print_dict_map(dict_map: dict):
