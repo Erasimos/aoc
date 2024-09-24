@@ -34,7 +34,7 @@ def insert_sort(list: List, compare: Callable):
                 break
         else:
             sorted_list.append(el)
-            
+
     return sorted_list
 
 
@@ -47,10 +47,8 @@ def print_dict_map(dict_map: dict):
 
     for y in range(min_y, max_y + 1):
         for x in range(min_x, max_x + 1):
-            if dict_map.get(Vec2D(x, y), False):
-                print('#', end='')
-            else:
-                print('.', end='')
+            tile = dict_map.get(Vec2D(x, y), '.')
+            print(tile, end='')
         print()
 
 class Vec2D:
