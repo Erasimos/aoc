@@ -1,9 +1,7 @@
-import os
 import math
 import pyperclip
 from typing import List, Callable
 import heapq
-
 
 def read_file(file):
     f = open(file, 'r')
@@ -39,38 +37,14 @@ def insert_sort(list: List, compare: Callable):
     return sorted_list
 
 
-def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D):
-
-    # distance from start, node
-    q = [(0, start)]
-    distances = {start: 0}
-    
-    while q:
-
-        current_distance, current_node = heapq.heappop(q)
-
-        if current_node == goal:
-            return current_distance
-        
-    
-        neighbors = get_neighbours(graph=graph, pos=current_node)
-
-        for neighbor in neighbors:
-            new_distance = current_distance + 1
-
-            if new_distance < distances.get(neighbor, math.inf):
-                distances[neighbor] = new_distance
-                heapq.heappush(q, (new_distance, neighbor))
-
-    return math.inf
 
 
 def print_dict_map(dict_map: dict):
 
-    min_x = int(min([pos.x for pos in dict_map.keys()]))
-    max_x = int(max([pos.x for pos in dict_map.keys()]))
-    min_y = int(min([pos.y for pos in dict_map.keys()]))
-    max_y = int(max([pos.y for pos in dict_map.keys()]))
+    x_positions = [pos.x for pos in dict_map.keys()]
+    y_positions = [pos.y for pos in dict_map.keys()]
+    min_x, max_x = min(x_positions), max(x_positions)
+    min_y, max_y = min(y_positions), max(y_positions)
 
     for y in range(min_y, max_y + 1):
         for x in range(min_x, max_x + 1):
@@ -131,7 +105,6 @@ class Vec2D:
 def manhattan(v1: Vec2D, v2: Vec2D):
     return abs(v1.x - v2.x) + abs(v1.y - v2.y)
 
-
 UDLR = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1)]
 UDLR_MAP = {'U': Vec2D(0, -1), 'D': Vec2D(0, 1), 'R': Vec2D(1, 0), 'L': Vec2D(-1, 0)}
 NEIGHBORS_2D = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1), Vec2D(1, 1), Vec2D(1, -1), Vec2D(-1, 1), Vec2D(-1, -1)]
@@ -141,3 +114,30 @@ RIGHT = Vec2D(1, 0)
 LEFT = Vec2D(-1, 0)
 UP = Vec2D(0, -1)
 DOWN = Vec2D(0, 1)
+
+def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D):
+
+    # distance from start, node
+    q = [(0, start)]
+    distances = {start: 0}
+    
+    while q:
+
+        current_distance, current_node = heapq.heappop(q)
+
+        if current_node == goal:
+            return current_distance
+        
+    
+        neighbors = get_neighbours(graph=graph, pos=current_node)
+
+        for neighbor in neighbors:
+            new_distance = current_distance + 1
+
+            if new_distance < distances.get(neighbor, math.inf):
+                distances[neighbor] = new_distance
+                heapq.heappush(q, (new_distance, neighbor))
+
+    return math.inf
+
+

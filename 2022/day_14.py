@@ -3,7 +3,14 @@ import sys
 from pathlib import Path
 sys.path.append(os.getcwd() + '/ut')
 import ut
+from screen import AoCScreen
 from ut import Vec2D
+from constants import Colors
+
+
+pixel_map = {'#': Colors.BLACK, '': Colors.WHITE, 'o': Colors.SAND_YELLOW}
+
+aoc_screen = AoCScreen(pixel_map= pixel_map)
 
 day = Path(__file__).stem
 puzzle_input_path = Path(__file__).parent / 'input' / f'{day}.txt'
@@ -66,12 +73,12 @@ class Sandsystem():
 
     def fill(self):
         while self.move_sand():
-            ut.print_dict_map(dict_map=self.rock_map)
+            aoc_screen.render_grid(grid=self.rock_map)      
             pass
 
     def fill_2(self):
         while self.move_sand_2():
-            ut.print_dict_map(dict_map=self.rock_map)
+            aoc_screen.render_grid(grid=self.rock_map)      
             pass
 
 def add_rock(rock_map: dict, p1: str, p2: str):
@@ -108,6 +115,7 @@ def part_two():
     sandsystem.fill_2()
     answer = sum([1 for tile in sandsystem.rock_map.values() if tile == 'o'])
     ut.print_answer(part=2, day=day, answer=answer)
+
 
 
 part_one()
