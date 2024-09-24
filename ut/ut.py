@@ -2,6 +2,7 @@ import os
 import math
 import pyperclip
 from typing import List, Callable
+import heapq
 
 
 def read_file(file):
@@ -36,6 +37,32 @@ def insert_sort(list: List, compare: Callable):
             sorted_list.append(el)
 
     return sorted_list
+
+
+def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D):
+
+    # distance from start, node
+    q = [(0, start)]
+    distances = {start: 0}
+    
+    while q:
+
+        current_distance, current_node = heapq.heappop(q)
+
+        if current_node == goal:
+            return current_distance
+        
+    
+        neighbors = get_neighbours(graph=graph, pos=current_node)
+
+        for neighbor in neighbors:
+            new_distance = current_distance + 1
+
+            if new_distance < distances.get(neighbor, math.inf):
+                distances[neighbor] = new_distance
+                heapq.heappush(q, (new_distance, neighbor))
+
+    return math.inf
 
 
 def print_dict_map(dict_map: dict):
