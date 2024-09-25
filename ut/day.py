@@ -14,31 +14,40 @@ class Button():
             self.rect = pygame.Rect(x, y, w, h)
             self.effect = effect
 
+
 class Day:
     
-    def __init__(self, part_one: Callable, part_two: Callable, pixel_map: dict, update_frequency: int = 1):
+    def __init__(self, part_one: Callable, part_two: Callable, pixel_map: dict):
         self.part_one = part_one
         self.part_two = part_two
         self.pixel_map = pixel_map
-        self.aoc_screen = AoCScreen(pixel_map=pixel_map, update_frequence=update_frequency)
+        self.aoc_screen = AoCScreen(pixel_map=pixel_map, update_frequence=1)
+        self.input_active = False
+        self.input_value = 'Update Frequency'
+        self.input_button = None
         self.running = False
         self.init_buttons()
 
     def init_buttons(self):
 
-        button_quit = Button(x=self.aoc_screen.w - 130, y=self.aoc_screen.h - 60, w=120, h=50, text='Quit', effect=self.quit)
-        button_part_one = Button(x=10, y=self.aoc_screen.h - 60, w=120, h=50, text='Part One', effect=self.part_one)
-        button_part_two = Button(x=140, y=self.aoc_screen.h - 60, w=120, h=50, text='Part Two', effect=self.part_two)
-        self.buttons = [button_quit, button_part_one, button_part_two]
+        quit_button = Button(x=self.aoc_screen.w - 130, y=self.aoc_screen.h - 60, w=120, h=50, text='Quit', effect=self.quit_button)
+        part_one_button = Button(x=10, y=self.aoc_screen.h - 60, w=120, h=50, text='Part One', effect=self.part_one_button)
+        button_part_two = Button(x=140, y=self.aoc_screen.h - 60, w=120, h=50, text='Part Two', effect=self.part_two_button)
+        update_frequency_button = Button(x=10, y=self.aoc_screen.h - 130, w=120, h=50, text=self.input_value, effect=self.update_frequency_button)
+        self.input_button = update_frequency_button
+        self.buttons = [quit_button, part_one_button, button_part_two, update_frequency_button]
 
-    def part_one(self):
+    def part_one_button(self):
         self.part_one()
 
-    def part_two(self):
+    def part_two_button(self):
         self.part_two()
 
-    def quit(self):
+    def quit_button(self):
         self.running = False
+
+    def update_frequency_button(self):
+        self.input_active = True
 
     def draw_button(self, button: Button):
         pygame.draw.rect(self.aoc_screen.screen, Colors.BLUE, button.rect)
@@ -48,6 +57,7 @@ class Day:
         self.aoc_screen.screen.blit(text_surface, text_rect)
 
     def draw_buttons(self):
+        self.input_button.text = self.input_value
         for button in self.buttons:
             self.draw_button(button)
 
@@ -69,6 +79,16 @@ class Day:
 
                     for button in self.buttons:
                         if button.rect.collidepoint(event.pos): button.effect()
+                
+                if event.type == pygame.KEYDOWN and self.input_active:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.input_value = self.input_value[:-1]  # Remove last character
+                    elif event.key == pygame.K_RETURN:  # Press Enter to submit
+                        new_update_frequency = 0 if not str.isnumeric(self.input_value) else int(self.input_value)
+                        self.aoc_screen.update_frequency = new_update_frequency  # Update the class variable
+                        self.input_active = False  # Disable further input
+                    else:
+                        self.input_value += event.unicode  # Append typed character
 
     def run(self):
         self.running  = True

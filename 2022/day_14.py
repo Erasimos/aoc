@@ -113,5 +113,5 @@ def part_two():
 
 
 pixel_map = {'#': Colors.GRAY, '': Colors.WHITE, 'o': Colors.SAND_YELLOW}
-day = Day(part_one=part_one, part_two=part_two, pixel_map=pixel_map, update_frequency=50)
+day = Day(part_one=part_one, part_two=part_two, pixel_map=pixel_map)
 day.run()
