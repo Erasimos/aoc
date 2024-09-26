@@ -69,7 +69,7 @@ class Computer:
             elif instruction.op == 'addx':      
                 self.addx(instruction.args[0])
             
-            
+        
 def get_input():
     puzzle_input = ut.read_file(puzzle_input_path)
     return  [Instruction(op=op, args=args) for op, *args in (line.split() for line in puzzle_input)]
@@ -96,7 +96,6 @@ def part_two():
     answer = 0
 
     ut.print_answer(part=2, day=day, answer=answer)
-
 
 part_one()
 part_two()

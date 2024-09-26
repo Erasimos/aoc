@@ -9,5 +9,7 @@ class Colors():
     BLUE = (32, 178, 170)
     STEEL_BLUE = (176, 196, 222)
     SILVER = (192,192,192)
+    RED = (128,0,0)
+    GREEN = (50,205,50)
 
 

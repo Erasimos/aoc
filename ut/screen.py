@@ -9,8 +9,8 @@ default_pixel_map = {
     '': Colors.WHITE 
 }
 
-default_w = 800
-default_h = 800
+default_w = 1000
+default_h = 1000
 
 class AoCScreen():
     def __init__(self, w = default_w, h = default_h, speed = 0, pixel_map: dict = default_pixel_map, update_frequence: int = 1):
