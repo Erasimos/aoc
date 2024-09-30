@@ -2,6 +2,8 @@ import math
 import pyperclip
 from typing import List, Callable
 import heapq
+import itertools
+
 
 def read_file(file):
     f = open(file, 'r')
@@ -35,7 +37,6 @@ def insert_sort(list: List, compare: Callable):
             sorted_list.append(el)
 
     return sorted_list
-
 
 
 
@@ -101,6 +102,51 @@ class Vec2D:
     def neighbors(self):
         return [self + neighbor_dir for neighbor_dir in NEIGHBORS_2D]
 
+class Vec3D:
+    def __init__(self, x: float, y: float, z: float):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __repr__(self):
+        return f"Vector(x={self.x}, y={self.y}, z={self.z})"
+
+    def __add__(self, other):
+        if isinstance(other, Vec3D):
+            return Vec3D(self.x + other.x, self.y + other.y, self.z + other.z)
+        return NotImplemented
+
+    def __sub__(self, other):
+        if isinstance(other, Vec3D):
+            return Vec3D(self.x - other.x, self.y - other.y, self.z - other.z)
+        return NotImplemented
+
+    def __eq__(self, other):
+        if isinstance(other, Vec3D):
+            return self.x == other.x and self.y == other.y and self.z == other.z
+        return NotImplemented
+    
+    def __hash__(self) -> int:
+        return hash((self.x, self.y, self.z))
+
+    def __lt__(self, other): 
+        if isinstance(other, Vec3D):
+            return (self.x + self.y + self.z) < (other.x + other.y + other.z)
+        return NotImplemented
+    
+    def __neg__(self):
+        """Negates the x and y values"""
+        return Vec3D(-self.x, -self.y, self.z)
+    
+    def neighbours(self):
+        return [self + direction for direction in NEIGHBORS_3D]
+    
+    def clamp(self):
+        clamped_x = 0 if self.x == 0 else math.copysign(1, self.x)
+        clamped_y = 0 if self.y == 0 else math.copysign(1, self.y)
+        clamped_z = 0 if self.z == 0 else math.copysign(1, self.z) 
+        return Vec3D(clamped_x, clamped_y, clamped_z)
+    
 
 def manhattan(v1: Vec2D, v2: Vec2D):
     return abs(v1.x - v2.x) + abs(v1.y - v2.y)
@@ -108,6 +154,8 @@ def manhattan(v1: Vec2D, v2: Vec2D):
 UDLR = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1)]
 UDLR_MAP = {'U': Vec2D(0, -1), 'D': Vec2D(0, 1), 'R': Vec2D(1, 0), 'L': Vec2D(-1, 0)}
 NEIGHBORS_2D = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1), Vec2D(1, 1), Vec2D(1, -1), Vec2D(-1, 1), Vec2D(-1, -1)]
+#NEIGHBORS_3D = [Vec3D(x, y, z) for x, y, z in itertools.product([-1, 0, 1], repeat=3) if not (x, y, z) == (0, 0, 0)]
+NEIGHBORS_3D = [Vec3D(0, 0, 1), Vec3D(0, 0, -1), Vec3D(0, 1, 0), Vec3D(0, -1, 0), Vec3D(1, 0, 0), Vec3D(-1, 0, 0)]
 
 ZERO_POS = Vec2D(0, 0)
 RIGHT = Vec2D(1, 0)
