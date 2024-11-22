@@ -1,17 +1,23 @@
 import os
 import sys
 from pathlib import Path
-sys.path.append(os.getcwd() + '/ut')
-import ut
-from constants import Colors
-from day import Day
+sys.path.insert(0, os.path.join(os.getcwd(), 'ut'))
+from ut.day import Day
+from ut.constants import Colors
+from ut.common import Vec2D, read_file, print_answer
+
+from ut.simulation_state import SimulationState
+simulation_state = SimulationState()
+
+day_nr = Path(__file__).stem
+puzzle_input_path = Path(__file__).parent / 'input' / f'{day_nr}.txt'
 
 day_nr = Path(__file__).stem
 puzzle_input_path = Path(__file__).parent / 'input' / f'{day_nr}.txt'
 
 
 def get_input():
-    puzzle_input = ut.read_file(puzzle_input_path)
+    puzzle_input = read_file(puzzle_input_path)
 
 
 def part_one():
@@ -20,7 +26,7 @@ def part_one():
 
     answer = 0
 
-    ut.print_answer(part=1, day=day_nr, answer=answer)
+    print_answer(part=1, day=day_nr, answer=answer)
 
 
 def part_two():
@@ -29,7 +35,7 @@ def part_two():
 
     answer = 0
     
-    ut.print_answer(part=2, day=day_nr, answer=answer)
+    print_answer(part=2, day=day_nr, answer=answer)
 
 
 def run_day():

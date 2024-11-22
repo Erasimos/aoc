@@ -2,7 +2,6 @@ import math
 import pyperclip
 from typing import List, Callable
 import heapq
-import itertools
 
 
 def read_file(file):
@@ -49,7 +48,7 @@ def print_dict_map(dict_map: dict):
 
     for y in range(min_y, max_y + 1):
         for x in range(min_x, max_x + 1):
-            tile = dict_map.get(Vec2D(x, y), '.')
+            tile = dict_map.get(Vec2D(x, y), ' ')
             print(tile, end='')
         print()
 

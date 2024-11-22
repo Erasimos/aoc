@@ -1,7 +1,6 @@
 import pygame
-import time
-from constants import Colors
-from ut import Vec2D
+from ut.constants import Colors
+from ut.common import Vec2D
 
 
 default_pixel_map = {
@@ -9,7 +8,7 @@ default_pixel_map = {
     '': Colors.WHITE 
 }
 
-default_w = 1000
+default_w = 2000
 default_h = 1000
 
 class AoCScreen():

@@ -1,10 +1,13 @@
 import sys
 import pygame
-from constants import Colors
+from ut.constants import Colors
 pygame.init()
-from screen import AoCScreen
+from ut.screen import AoCScreen
 from typing import Callable
+import threading
 
+from ut.simulation_state import SimulationState
+simulation_state = SimulationState()
 
 font = pygame.font.Font(None, 36)
 
@@ -20,6 +23,9 @@ class Day:
     def __init__(self, part_one: Callable, part_two: Callable, pixel_map: dict):
         self.part_one = part_one
         self.part_two = part_two
+        self.part_one_thread = None
+        self.part_two_thread = None
+        self.simulation_running = False
         self.pixel_map = pixel_map
         self.aoc_screen = AoCScreen(pixel_map=pixel_map, update_frequence=1)
         self.input_active = False
@@ -38,10 +44,23 @@ class Day:
         self.buttons = [quit_button, part_one_button, button_part_two, update_frequency_button]
 
     def part_one_button(self):
-        self.part_one()
+        if self.simulation_running:
+            print('Error: Simulation already running')
+            return
+        
+        self.simulation_running = True
+        self.part_one_thread = threading.Thread(target=self.part_one)
+        self.part_one_thread.start()
 
     def part_two_button(self):
-        self.part_two()
+        if self.simulation_running:
+            print('Error: Simulation already running')
+            return
+        
+        self.simulation_running = True
+        self.part_two_thread = threading.Thread(target=self.part_two)
+        self.part_two_thread.start()
+        
 
     def quit_button(self):
         self.running = False
@@ -63,11 +82,17 @@ class Day:
 
     def draw_grid(self, grid: dict):
 
-        self.aoc_screen.render_grid(grid=grid)
+        if not grid == {}:
+            self.aoc_screen.render_grid(grid=grid)
 
     def draw(self):
-        
+
         self.draw_buttons()
+
+        if self.simulation_running:
+            self.draw_grid(grid=simulation_state.state)
+
+        
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -90,16 +115,27 @@ class Day:
                     else:
                         self.input_value += event.unicode  # Append typed character
 
+    def handle_simulation(self):
+        if self.simulation_running:
+            if self.part_one_thread and not self.part_one_thread.is_alive(): 
+                self.simulation_running = False
+            if self.part_two_thread and not self.part_two_thread.is_alive():
+                self.simulation_running = False
+            
+
     def run(self):
         self.running  = True
         self.aoc_screen.screen.fill(Colors.WHITE)
+        
         while self.running:
             
             self.draw()
 
             self.handle_events()
+            
+            self.handle_simulation()
 
             pygame.display.flip()
         
         pygame.quit()
-        sys.exit()
+        sys.exit()()
