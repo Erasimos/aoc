@@ -18,7 +18,7 @@ def read_file_raw(file):
 
 def print_answer(day, part, answer):
     pyperclip.copy(answer)
-    print('The answer to day: ', day, ' part ', part, ' is: ', answer)
+    print('The answer to day:', day, 'part', part, 'is:', answer)
 
 
 

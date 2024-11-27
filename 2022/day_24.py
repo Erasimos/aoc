@@ -10,8 +10,8 @@ from ut.simulation_state import SimulationState
 simulation_state = SimulationState()
 
 day_name = Path(__file__).stem
-day_nr = day_name[4:]
-puzzle_input_path = Path(__file__).parent / 'input' / f'{day_nr}.txt'
+day_nr = day_name[4:] 
+puzzle_input_path = Path(__file__).parent / 'input' / f'{day_name}.txt'
 
 def get_input():
     puzzle_input = read_file(puzzle_input_path)
