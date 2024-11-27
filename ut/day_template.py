@@ -9,12 +9,8 @@ from ut.common import Vec2D, read_file, print_answer
 from ut.simulation_state import SimulationState
 simulation_state = SimulationState()
 
-day_nr = Path(__file__).stem
+day_nr = Path(__file__).stem[3:] 
 puzzle_input_path = Path(__file__).parent / 'input' / f'{day_nr}.txt'
-
-day_nr = Path(__file__).stem
-puzzle_input_path = Path(__file__).parent / 'input' / f'{day_nr}.txt'
-
 
 def get_input():
     puzzle_input = read_file(puzzle_input_path)

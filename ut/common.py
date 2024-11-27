@@ -10,50 +10,36 @@ def read_file(file):
     f.close()
     return content
 
-
 def read_file_raw(file):
     f = open(file, 'r')
     content = f.read()
     f.close()
     return content
 
-
 def print_answer(day, part, answer):
     pyperclip.copy(answer)
     print('The answer to day: ', day, ' part ', part, ' is: ', answer)
 
 
-def insert_sort(list: List, compare: Callable):
-    sorted_list = []
-
-    for el in list:
-
-        for i, sorted_el in enumerate(sorted_list):
-            if compare(el, sorted_el):
-                sorted_list.insert(i, el)
-                break
-        else:
-            sorted_list.append(el)
-
-    return sorted_list
 
 
+class Vec2DMap:
+    def __init__(self, dict_map: dict):
+        self.dict_map = dict_map
+    
+    def print_map(self):
+        x_positions = [pos.x for pos in self.dict_map.keys()]
+        y_positions = [pos.y for pos in self.dict_map.keys()]
+        min_x, max_x = min(x_positions), max(x_positions)
+        min_y, max_y = min(y_positions), max(y_positions)
 
-def print_dict_map(dict_map: dict):
-
-    x_positions = [pos.x for pos in dict_map.keys()]
-    y_positions = [pos.y for pos in dict_map.keys()]
-    min_x, max_x = min(x_positions), max(x_positions)
-    min_y, max_y = min(y_positions), max(y_positions)
-
-    for y in range(min_y, max_y + 1):
-        for x in range(min_x, max_x + 1):
-            tile = dict_map.get(Vec2D(x, y), ' ')
-            print(tile, end='')
-        print()
+        for y in range(min_y, max_y + 1):
+            for x in range(min_x, max_x + 1):
+                tile = self.dict_map.get(Vec2D(x, y), '.')
+                print(tile, end='')
+            print()
 
 class Vec2D:
-
 
     def __init__(self, x: float, y: float):
         self.x = x
@@ -97,9 +83,13 @@ class Vec2D:
     def neighbors_orthogonal(self):
         return [self + neighbor_dir for neighbor_dir in UDLR]
 
-
     def neighbors(self):
         return [self + neighbor_dir for neighbor_dir in NEIGHBORS_2D]
+    
+    def manhattan(self, other):
+        if isinstance(other, Vec2D):
+            return abs(self.x - other.x) + abs(self.y - other.y)
+        return NotImplemented
 
 class Vec3D:
     def __init__(self, x: float, y: float, z: float):
@@ -146,14 +136,13 @@ class Vec3D:
         clamped_z = 0 if self.z == 0 else math.copysign(1, self.z) 
         return Vec3D(clamped_x, clamped_y, clamped_z)
     
+    
 
-def manhattan(v1: Vec2D, v2: Vec2D):
-    return abs(v1.x - v2.x) + abs(v1.y - v2.y)
+
 
 UDLR = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1)]
 UDLR_MAP = {'U': Vec2D(0, -1), 'D': Vec2D(0, 1), 'R': Vec2D(1, 0), 'L': Vec2D(-1, 0)}
 NEIGHBORS_2D = [Vec2D(1, 0), Vec2D(-1, 0), Vec2D(0, 1), Vec2D(0, -1), Vec2D(1, 1), Vec2D(1, -1), Vec2D(-1, 1), Vec2D(-1, -1)]
-#NEIGHBORS_3D = [Vec3D(x, y, z) for x, y, z in itertools.product([-1, 0, 1], repeat=3) if not (x, y, z) == (0, 0, 0)]
 NEIGHBORS_3D = [Vec3D(0, 0, 1), Vec3D(0, 0, -1), Vec3D(0, 1, 0), Vec3D(0, -1, 0), Vec3D(1, 0, 0), Vec3D(-1, 0, 0)]
 
 ZERO_POS = Vec2D(0, 0)
@@ -188,3 +177,16 @@ def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D):
     return math.inf
 
 
+def insert_sort(list: List, compare: Callable):
+    sorted_list = []
+
+    for el in list:
+
+        for i, sorted_el in enumerate(sorted_list):
+            if compare(el, sorted_el):
+                sorted_list.insert(i, el)
+                break
+        else:
+            sorted_list.append(el)
+
+    return sorted_list
