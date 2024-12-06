@@ -26,12 +26,23 @@ def print_answer(day, part, answer):
 class Vec2DMap:
     def __init__(self, dict_map: dict):
         self.dict_map = dict_map
+
+        min_x, max_x, min_y, max_y = self.get_size()
+        
+        self.min_x = min_x
+        self.max_x = max_x
+        self.min_y = min_y
+        self.max_y = max_y
     
-    def print_map(self):
+    def get_size(self):
         x_positions = [pos.x for pos in self.dict_map.keys()]
         y_positions = [pos.y for pos in self.dict_map.keys()]
         min_x, max_x = min(x_positions), max(x_positions)
         min_y, max_y = min(y_positions), max(y_positions)
+        return min_x, max_x, min_y, max_y  
+
+    def print_map(self):
+        min_x, max_x, min_y, max_y = self.get_size()
 
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
