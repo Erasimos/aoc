@@ -82,6 +82,13 @@ class Vec2D:
             return (self.x + self.y) < (other.x + other.y)
         return NotImplemented
     
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
+            return Vec2D(self.x * other, self.y * other)
+    
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
     def __neg__(self):
         """Negates the x and y values"""
         return Vec2D(-self.x, -self.y)
