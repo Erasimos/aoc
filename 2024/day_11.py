@@ -12,11 +12,7 @@ day_nr = day_name[4:]
 puzzle_input_path = Path(__file__).parent / 'input' / f'{day_name}.txt'
 
 def get_input():
-    puzzle_input = read_file_raw(puzzle_input_path)
-    stones = {}
-    for el in puzzle_input.split():
-        stones[int(el)] = 1
-    return stones        
+    return {int(el): 1 for el in read_file_raw(puzzle_input_path).split()}
 
 def blink(stones: dict):
 
@@ -44,8 +40,7 @@ def blink(stones: dict):
 def part_one():
 
     stones = get_input()
-    blinks = 25
-    for _ in range(blinks):
+    for _ in range(25): 
         stones = blink(stones=stones)
     answer = sum([el for el in stones.values()])
     print_answer(part=1, day=day_nr, answer=answer)
@@ -54,8 +49,7 @@ def part_one():
 def part_two():
 
     stones = get_input()
-    blinks = 75
-    for _ in range(blinks):
+    for _ in range(75): 
         stones = blink(stones=stones)
     answer = sum([el for el in stones.values()])
     print_answer(part=2, day=day_nr, answer=answer)
