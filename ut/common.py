@@ -171,28 +171,31 @@ LEFT = Vec2D(-1, 0)
 UP = Vec2D(0, -1)
 DOWN = Vec2D(0, 1)
 
-def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D):
+def dijsktra(graph: dict, get_neighbours: Callable, start: Vec2D, goal: Vec2D, direction: Vec2D):
 
     # distance from start, node
-    q = [(0, start)]
+    q = [(0, start, direction)]
     distances = {start: 0}
-    
     while q:
 
-        current_distance, current_node = heapq.heappop(q)
+        
+
+        current_distance, current_node, current_direction = heapq.heappop(q)
 
         if current_node == goal:
             return current_distance
         
     
-        neighbors = get_neighbours(graph=graph, pos=current_node)
+        neighbors = get_neighbours(graph=graph, pos=current_node, current_direction=current_direction)
 
-        for neighbor in neighbors:
+        for neighbor, new_direction in neighbors:
             new_distance = current_distance + 1
+            if not new_direction == current_direction:
+                new_distance += 1000
 
             if new_distance < distances.get(neighbor, math.inf):
                 distances[neighbor] = new_distance
-                heapq.heappush(q, (new_distance, neighbor))
+                heapq.heappush(q, (new_distance, neighbor, new_direction))
 
     return math.inf
 
