@@ -17,6 +17,7 @@ class ThreeBitComputer:
         self.b = b
         self.c = c
         self.instruction_pointer = 0
+        self.output = ''
 
     def run_program(self, program: list):
 
@@ -81,12 +82,12 @@ class ThreeBitComputer:
             self.instruction_pointer += 2
 
     def bxc(self, operand):
-        self.b = self.b & self.c
+        self.b = self.b | self.c
         self.instruction_pointer += 2
 
     def out(self, operand):
         output = self.get_combo_operand(operand=operand) % 8
-        print(output, ',', end='')
+        self.output += str(output) + ','
         self.instruction_pointer += 2
 
     def bdv(self, operand):
@@ -104,8 +105,7 @@ def part_one():
     pc = ThreeBitComputer(a=46323429, b=0, c=0)
     instructions = [2,4,1,1,7,5,1,5,4,3,0,3,5,5,3,0]
     pc.run_program(instructions)
-    print()
-    answer = 0
+    answer = pc.output
 
     print_answer(part=1, day=day_nr, answer=answer)
 
